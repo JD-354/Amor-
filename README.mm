@@ -1,515 +1,321 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Estudiantes Sin Límites - 3D</title>
-
-    <link rel="sytlesheet" href="file:///C:/Users/LENOVO/Downloads/R.JD/JD/estudiantes%201.html">
-
+    <title>Document</title>
 </head>
-
 <body>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
 
     <style>
-
         * {
-
             margin: 0;
-
             padding: 0;
-
             box-sizing: border-box;
-
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-
 
         body {
-
-            font-family: 'Arial', sans-serif;
-
-            overflow-x: hidden;
-
-            background: #000;
-
-        }
-
-
-
-        #canvas-container {
-
-            position: fixed;
-
-            top: 0;
-
-            left: 0;
-
-            width: 100%;
-
-            height: 100%;
-
-            z-index: 1;
-
-        }
-
-
-
-        .content {
-
+            background: linear-gradient(45deg, #000000, #003300);
+            color: white;
+            min-height: 100vh;
             position: relative;
-
-            z-index: 2;
-
-            color: white;
-
         }
 
-
-
-        .navbar {
-
+        .particles {
             position: fixed;
-
             top: 0;
-
+            left: 0;
             width: 100%;
-
-            padding: 1rem 2rem;
-
-            background: rgba(0, 0, 0, 0.7);
-
-            backdrop-filter: blur(10px);
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            z-index: 1000;
-
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
         }
 
-
-
-        .logo {
-
-            font-size: 1.5rem;
-
-            font-weight: bold;
-
-            color: #fff;
-
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-
-
-        .nav-links a {
-
-            color: white;
-
-            text-decoration: none;
-
-            margin-left: 2rem;
-
-            padding: 0.5rem 1rem;
-
-            border-radius: 20px;
-
-            transition: all 0.3s;
-
-            border: 1px solid rgba(255, 255, 255, 0.1);
-
-        }
-
-
-
-        .nav-links a:hover {
-
-            background: rgba(255, 255, 255, 0.1);
-
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-
-        }
-
-
-
-        .hero {
-
-            height: 100vh;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: center;
-
-            align-items: center;
-
+        header {
             text-align: center;
-
-            padding: 2rem;
-
+            padding: 40px 0;
             background: rgba(0, 0, 0, 0.5);
-
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
         }
 
-
-
-        .hero h1 {
-
-            font-size: 3.5rem;
-
-            margin-bottom: 1rem;
-
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-
+        h1 {
+            font-size: 3em;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            margin-bottom: 20px;
         }
 
-
-
-        .hero p {
-
-            font-size: 1.2rem;
-
-            margin-bottom: 2rem;
-
-            max-width: 600px;
-
+        .materia {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-
-
-        .cta-button {
-
-            background: linear-gradient(45deg, #00ffff, #00ff88);
-
-            color: black;
-
-            padding: 1rem 2rem;
-
-            border-radius: 30px;
-
-            text-decoration: none;
-
-            font-weight: bold;
-
-            transition: all 0.3s;
-
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-
-        }
-
-
-
-        .cta-button:hover {
-
-            transform: scale(1.1);
-
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-
-        }
-
-
-
-        .share-link {
-
-            position: fixed;
-
-            bottom: 2rem;
-
-            right: 2rem;
-
-            background: rgba(0, 0, 0, 0.7);
-
-            padding: 1rem 2rem;
-
-            border-radius: 20px;
-
-            backdrop-filter: blur(10px);
-
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-
-            z-index: 1000;
-
-        }
-
-
-
-        .share-link input {
-
-            background: rgba(255, 255, 255, 0.1);
-
-            border: 1px solid rgba(255, 255, 255, 0.2);
-
-            padding: 0.5rem 1rem;
-
-            border-radius: 10px;
-
-            color: white;
-
-            margin-right: 1rem;
-
-            width: 300px;
-
-        }
-
-
-
-        .share-link button {
-
-            background: linear-gradient(45deg, #00ffff, #00ff88);
-
-            border: none;
-
-            padding: 0.5rem 1rem;
-
-            border-radius: 10px;
-
+        .materia {
+            background: rgba(0, 51, 0, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
             cursor: pointer;
-
-            transition: all 0.3s;
-
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.1);
         }
 
-
-
-        .share-link button:hover {
-
-            transform: scale(1.1);
-
+        .materia:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 255, 0, 0.2);
         }
 
-
-
-        @media (max-width: 768px) {
-
-            .hero h1 {
-
-                font-size: 2rem;
-
-            }
-
-            
-
-            .nav-links {
-
-                display: none;
-
-            }
-
-
-
-            .share-link {
-
-                bottom: 1rem;
-
-                right: 1rem;
-
-                left: 1rem;
-
-            }
-
-
-
-            .share-link input {
-
-                width: calc(100% - 100px);
-
-            }
-
+        .materia h2 {
+            color: #00ff00;
+            margin-bottom: 15px;
         }
 
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #00ff00, #006600);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .formulario {
+            background: rgba(0, 51, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .formulario input, .formulario textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .servicios {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .servicios {
+            background: linear-gradient(45deg, #001a00, #003300);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #00ff00;
+        }
+
+        .materias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .materia {
+            background: rgba(0, 51, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .estadistica {
+            background: rgba(0, 51, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .numero {
+            font-size: 2.5em;
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
     </style>
-
 </head>
-
 <body>
+    <canvas class="particles"></canvas>
+    <div class="container">
+        <header>
 
-    <div id="canvas-container"></div>
+    <div id="modal-tutoria" class="materia">
+        <div class="modal-content">
+            <span class="materia" onclick="closeModal('tutoria')">&times;</span>
+            <h1>Programa de Tutoría Personalizada</h1>
+            <h1>Materias Disponibles:</h1>
+            </header>
 
-
-
-    <div class="content">
-
-        <nav class="navbar">
-
-            <div class="logo">Estudiantes Sin Límites</div>
-
-            <div class="nav-links">
-
-                <a href="#inicio">Inicio</a>
-
-                <a href="#servicios">Servicios</a>
-
-                <a href="#contacto">Contacto</a>
-
+            <div class="materia">
+                <h2>Matemáticas</h2>
+                    <p>Algebra, cálculo, Geometría</p><button onclick="openModal('otros apoyos')" class="btn">comenzar classes</button>
+                    </div>
+                <div class="materia">
+                    <h2>Ciencias</h2>
+                    <p>Física, Química, Biología</p><button onclick="openModal('otros apoyos')" class="btn">comenzar classes</button>
+                </div>
+                <div class="materia">
+                    <h2>Lenguaje</h2>
+                    <p>Comprensión, Redacción</p><button onclick="openModal('otros apoyos')" class="btn">comenzar classes</button>
+                </div>
+                <div class="materia">
+                    <h2>Inglés</h2>
+                    <p>Todos los niveles</p><button onclick="openModal('otros apoyos')" class="btn">comenzar classes</button>
+                </div>
+                
             </div>
-
-        </nav>
-
-
-
-        <section class="hero">
-
-            <h1>Estudiantes Sin Límites</h1>
-
-            <p>Descubre una nueva dimensión en el aprendizaje con nuestra plataforma educativa revolucionaria</p>
-
-            <a href="file:///C:/Users/LENOVO/Downloads/R.JD/JD/estu3.html?" class="cta-button">Comienza tu Viaje</a>
-
-        </section>
-
-
-
-        <div class="share-link">
-
-            <input type="text" value="file:///C:/Users/LENOVO/Downloads/R.JD/JD/estudiantes%201.html" readonly>
-
-            <button onclick="copyLink()">Copiar</button>
-
+            <p style="margin-top: 20px;">Metodología:</p>
+            <ul style="margin-left: 20px;">
+                <li>Evaluación inicial gratuita</li>
+                <li>Plan de estudio personalizado</li>
+                <li>Seguimiento continuo</li>
+                <li>Reportes de progreso mensuales</li>
+            </ul>
         </div>
-
     </div>
-
-
-
     <script>
+        // Código de partículas (mantener el mismo)
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-        // Configuración de Three.js
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        const scene = new THREE.Scene();
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-
-
-        // Crear partículas para el efecto de fondo
-
-        const particlesGeometry = new THREE.BufferGeometry();
-
-        const particlesCount = 5000;
-
-        const posArray = new Float32Array(particlesCount * 3);
-
-
-
-        for(let i = 0; i < particlesCount * 3; i++) {
-
-            posArray[i] = (Math.random() - 0.5) * 5;
-
+            draw() {
+                ctx.fillStyle = '#00ff00';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-
-
-        const particlesMaterial = new THREE.PointsMaterial({
-
-            size: 0.005,
-
-            color: 0x00ffff,
-
-        });
-
-
-
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-
-        scene.add(particlesMesh);
-
-
-
-        camera.position.z = 2;
-
-
-
-        // Animación
+        function init() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
 
         function animate() {
-
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
             requestAnimationFrame(animate);
-
-            particlesMesh.rotation.y += 0.001;
-
-            particlesMesh.rotation.x += 0.001;
-
-            renderer.render(scene, camera);
-
         }
 
+        init();
         animate();
 
-
-
-        // Responsive
-
-        window.addEventListener('resize', () => {
-
-            camera.aspect = window.innerWidth / window.innerHeight;
-
-            camera.updateProjectionMatrix();
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-        });
-
-
-
-        // Función para copiar el link
-
-        function copyLink() {
-
-            const input = document.querySelector('.share-link input');
-
-            input.select();
-
-            document.execCommand('copy');
-
-            alert('¡Link copiado al portapapeles!');
-
+        // Funciones para los modales
+        function openModal(type) {
+            document.getElementById(modal-$,{type}).style.display = 'flex';
         }
 
+        function closeModal(type) {
+            document.getElementById(modal-$,{type}).style.display = 'none';
+        }
 
-
-        // Efecto de movimiento con el mouse
-
-        document.addEventListener('mousemove', (event) => {
-
-            const mouseX = event.clientX / window.innerWidth - 0.5;
-
-            const mouseY = event.clientY / window.innerHeight - 0.5;
-
-            
-
-            particlesMesh.rotation.y = mouseX * 0.5;
-
-            particlesMesh.rotation.x = mouseY * 0.5;
-
-        });
-
-    </script>
-
+        
+        </script>
 
 
 </body>
-
 </html>
+        }
+
+
+
+        
+
+      
